@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="intro-container">
+        <div class="intro-text" align="center">AKG <br> SMART METER</div>
+    </div>
+
+    <div class="login-container">
+        <h1>Login</h1>
+        <form id="loginForm">
+            <label for="mobile">Mobile Number</label>
+            <input type="text" id="mobile" name="mobile" maxlength="10" inputmode="numeric" pattern="[0-9]*" required>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" maxlength="4" inputmode="numeric" required>
+            <button type="submit">Login</button>
+            <p id="errorMessage" class="error-message"></p>
+        </form>
+    </div>
+
+    <script src="scripts.js"></script>
+</body>
+</html>

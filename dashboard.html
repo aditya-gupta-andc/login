@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="dashboardstyles.css">
+</head>
+<body>
+    <div class="ribbon"> 
+       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   AKG SMART METER <span class="timer" id="timer">02:00</span>
+    </div>
+
+    <div class="dashboard">
+        <!-- Slider Menu -->
+        <nav id="sliderMenu" class="slider-menu" role="navigation" aria-label="Slider Menu">
+            <button id="closeMenu" class="menu-toggle close" aria-label="Close menu">✕</button>
+            <h1>Dashboard</h1>
+            <div class="welcome-message">
+                <h2>Welcome, <span id="userMobile"></span></h2>
+                <p>Your mobile number: <span class="userMobile"></span></p>
+            </div>
+            <div class="logout-container">
+                <button id="logout">Logout</button>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="dashboard-content">
+            <button id="openMenu" class="menu-toggle open" aria-label="Open menu">☰</button>
+            <div class="embedded-form">
+                <!-- Caspio form embedded script -->
+                <script type="text/javascript" src="https://c3dcv336.caspio.com/dp/3780E00058c9f63b37344de0ac75/emb"></script>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const userMobile = sessionStorage.getItem('userMobile');
+            if (!userMobile) {
+                window.location.href = 'index.html';
+            }
+            document.getElementById('userMobile').innerText = userMobile;
+            document.querySelector('.userMobile').innerText = userMobile;
+    
+            const sliderMenu = document.getElementById('sliderMenu');
+            const openMenuButton = document.getElementById('openMenu');
+            const closeMenuButton = document.getElementById('closeMenu');
+            const logoutButton = document.getElementById('logout');
+    
+            openMenuButton.addEventListener('click', () => {
+                sliderMenu.classList.add('open');
+            });
+    
+            closeMenuButton.addEventListener('click', () => {
+                sliderMenu.classList.remove('open');
+            });
+    
+            logoutButton.addEventListener('click', () => {
+                sessionStorage.removeItem('userMobile');
+                window.location.href = 'index.html';
+            });
+    
+            // Close menu if user clicks outside of it
+            document.addEventListener('click', (event) => {
+                if (!sliderMenu.contains(event.target) && !openMenuButton.contains(event.target)) {
+                    sliderMenu.classList.remove('open');
+                }
+            });
+    
+            // Prevent closing menu when clicking inside the menu
+            sliderMenu.addEventListener('click', (event) => {
+                event.stopPropagation();
+            });
+
+            // Timer for automatic logout
+            let timeLeft = 3 * 60; // 3 minutes in seconds
+            const timerElement = document.getElementById('timer');
+            
+            function updateTimer() {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timerElement.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+                if (timeLeft <= 60) {
+                    timerElement.classList.add('warning');
+                }
+
+                if (timeLeft <= 30) {
+                    timerElement.classList.add('blink');
+                }
+
+                if (timeLeft <= 0) {
+                    sessionStorage.removeItem('userMobile');
+                    window.location.href = 'index.html';
+                }
+
+                timeLeft--;
+            }
+
+            setInterval(updateTimer, 1000);
+        });
+    </script>
+</body>
+</html>

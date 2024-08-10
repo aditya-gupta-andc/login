@@ -1,0 +1,215 @@
+:root {
+    --primary-color: #0072ff;
+    --primary-hover: #005bb5;
+    --background-color: #f0f2f5;
+    --ribbon-color: #0072ff;
+    --ribbon-text-color: #ffffff;
+    --ribbon-timer-warning-color: #ff0000; /* Red color for warning */
+    --white: #ffffff;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: var(--background-color);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden; /* Prevent scrolling when menu is open */
+}
+
+.slider-menu {
+    position: fixed;
+    top: 0;
+    left: -300px; /* Hide menu off-screen initially */
+    width: 300px;
+    height: 100%;
+    background: var(--primary-color);
+    color: var(--white);
+    padding: 20px;
+    box-shadow: 4px 0 10px var(--shadow-color);
+    transition: left 0.5s cubic-bezier(0.25, 1, 0.5, 1), transform 0.5s cubic-bezier(0.25, 1, 0.5, 1); /* Smooth transition for menu slide and scale */
+    transform: scale(0.9); /* Slightly scaled down initially */
+    transform-origin: left; /* Anchor point for scaling */
+    z-index: 1000; /* Ensure menu is above other content */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Space between content and button */
+}
+
+.slider-menu.open {
+    left: 0; /* Show menu when open */
+    transform: scale(1); /* Scale to normal size */
+}
+
+.slider-menu h1 {
+    margin-top: 60px; /* Adjust this value to create space for the close button */
+}
+
+.menu-toggle {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: var(--primary-hover);
+    color: var(--white);
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.8em;
+    transition: background 0.3s ease, transform 0.3s ease; /* Smooth transition for button background and scale */
+    z-index: 2000; /* Ensure button is above ribbon and menu */
+}
+
+.menu-toggle.open {
+    display: block; /* Show open button initially */
+}
+
+.menu-toggle.close {
+    display: none; /* Hide close button initially */
+}
+
+.slider-menu.open + .dashboard-content .menu-toggle.open {
+    display: none;
+}
+
+.slider-menu.open + .dashboard-content .menu-toggle.close {
+    display: block;
+}
+
+.menu-toggle:hover {
+    background: var(--primary-hover);
+    transform: rotate(180deg); /* Rotate button on hover */
+}
+
+.menu-toggle:focus {
+    outline: none; /* Remove focus outline */
+}
+
+.ribbon {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: var(--ribbon-color);
+    color: var(--ribbon-text-color);
+    padding: 10px;
+    text-align: center;
+    font-size: 1.2em;
+    
+    font-weight: bold;
+    z-index: 500; /* Ensure it stays above other content */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px var(--shadow-color); /* Add shadow to the ribbon */
+    box-sizing: border-box; /* Ensure padding is included in width */
+}
+
+.ribbon .timer {
+    font-size: 1em;
+    font-weight: normal;
+    color: var(--ribbon-text-color);
+    transition: color 0.3s ease; /* Smooth transition for color change */
+    margin-left: auto; /* Push timer to the far right */
+    padding-right: 20px; /* Add padding on the right side to avoid clipping */
+}
+
+/* Change timer text color to red when 30 seconds are left */
+.ribbon .timer.warning {
+    color: var(--ribbon-timer-warning-color);
+    text-shadow: 0 0 3px #FF0000, 0 0 4px #fafafa; 
+
+}
+
+/* Blinking animation for timer warning */
+@keyframes blink {
+    0%, 50%, 100% {
+        opacity: 1;
+    }
+    25%, 75% {
+        opacity: 0;
+    }
+}
+
+/* Apply blinking animation when 15 seconds are left */
+.ribbon .timer.blink {
+    animation: blink 1s linear infinite;
+}
+
+.dashboard-content {
+    flex-grow: 1;
+    padding: 20px;
+    background: var(--white);
+    overflow-y: auto;
+    position: relative;
+    margin-top: 60px; /* Add margin-top to push content down and avoid collision with the ribbon */
+    transition: margin-left 0.5s cubic-bezier(0.25, 1, 0.5, 1), margin-top 0.5s cubic-bezier(0.25, 1, 0.5, 1); /* Smooth transition for content shift */
+    height: calc(100vh - 60px); /* Adjust the height to fill the viewport minus the ribbon */
+    display: flex; /* Enable flexbox */
+    /*align-items: center; /* Center content vertically */
+    justify-content: center; /* Center content horizontally */
+}
+
+.embed-container {
+    width: 100%; /* Adjust width as needed */
+    max-width: 1200px; /* Optional: set a max-width for the embed */
+    height: 80%; /* Adjust height as needed */
+    display: flex; /* Enable flexbox */
+    align-items: center; /* Center content vertically */
+    justify-content: center; /* Center content horizontally */
+}
+
+.embed-container iframe {
+    width: 100%; /* Full width of the container */
+    height: 100%; /* Full height of the container */
+    border: none; /* Remove iframe border */
+}
+
+.logout-container {
+    display: flex;
+    justify-content: center;
+    margin-top: auto; /* Push logout button to the bottom */
+    margin-bottom: 30px; /* Increase margin from the bottom */
+}
+
+#logout {
+    padding: 15px 25px; /* Increase padding for a larger button */
+    font-size: 1.2em; /* Increase font size for the button text */
+    border-radius: 15px; /* Optional: increase border radius for rounded corners */
+    background-color: var(--primary-hover); /* Ensure button color matches */
+    color: var(--white); /* Ensure text color is white */
+    border: none; /* Remove border */
+    cursor: pointer; /* Change cursor to pointer */
+    transition: background 0.3s ease, transform 0.2s ease; /* Smooth transition for button background and scale */
+}
+
+#logout:hover {
+    background-color: var(--primary-color); /* Darker color on hover */
+    transform: scale(1.05); /* Slightly enlarge button on hover */
+}
+
+@media (max-width: 768px) {
+    .slider-menu {
+        width: 250px; /* Adjust width for smaller screens */
+    }
+
+    .dashboard-content {
+        padding: 10px; /* Adjust padding for smaller screens */
+    }
+
+    .embed-container {
+        height: 60%; /* Adjust height for smaller screens */
+    }
+}
+
+
+
+
+
+
