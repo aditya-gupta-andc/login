@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 3000); // Duration for the intro animation
 
     const predefinedUsers = [
-        { mobile: '9415361786', password: '9415' },
+        { mobile: '012345678', password: '1234' },
        // { mobile: '222', password: '456' },
        // { mobile: '333', password: '789' }
     ];
